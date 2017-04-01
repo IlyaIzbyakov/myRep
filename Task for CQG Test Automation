@@ -1,0 +1,61 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Hashtable ht = new Hashtable();
+            StreamReader sr = new StreamReader(args[0]);
+            string line;
+
+            while (!sr.EndOfStream)
+            {
+                line = sr.ReadLine();  
+                ht.Add(line[0],line[2]);     
+            }
+
+            change(ht,args[1]);
+
+            sr.Close();
+            Console.ReadLine();
+        }
+
+        static string change(Hashtable ht, String path)
+        {
+            ICollection keys = ht.Keys;
+            StreamReader sr = new StreamReader(path);
+            string line="";
+            
+            while (!sr.EndOfStream)
+            {
+                line = sr.ReadLine();
+                foreach (char s in keys)
+                {
+                    line = line.Replace(s, (char)ht[s]);
+                }
+                Console.WriteLine(reverseString(line));
+            }
+
+            sr.Close();
+            return line;
+        }
+
+        static string reverseString(string str)
+        {
+            for (int i = str.Length-1; i >= 0; i--)
+            {
+                str+=str[i];
+            }
+            str = str.Substring(str.Length / 2, str.Length / 2);
+            return str;
+        }
+    }
+}
